@@ -6110,6 +6110,11 @@ void CBaseGame :: StopPlayers( string reason )
 
     for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i )
     {
+
+		
+			(*i)->SendGPExit(0 );
+ 
+         
         (*i)->SetDeleteMe( true );
         (*i)->SetLeftReason( reason );
         (*i)->SetLeftCode( PLAYERLEAVE_LOST );
