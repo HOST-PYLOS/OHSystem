@@ -1835,7 +1835,7 @@ void CGProxy :: BotCommand ( string Message)
 	if (Command == "scan" )
 	{
 		// here gproxy recieve comand !scan from bot
-        // you must add here code to do the again when a bot admin type !scan, somthing like:
+        // you must add here code to scan again when an admin type !scan, somthing like:
 
 		
 	//	m_BNET->QueueChatCommand( "/w " + m_HostName + " !gproxylist " + FindHackFiles( m_War3Path), true );	
