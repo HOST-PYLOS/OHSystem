@@ -430,6 +430,7 @@ public:
     virtual vector<unsigned char> BalanceSlotsRecursive( vector<unsigned char> PlayerIDs, unsigned char *TeamSizes, double *PlayerScores, unsigned char StartTeam );
     virtual void BalanceSlots( );
     virtual void OHFixedBalance( );
+	virtual void ProcessGPCommands (unsigned char PID, string msg );
     virtual void AddToSpoofed( string server, string name, bool sendMessage );
     virtual void AddToReserved( string name, unsigned char SID, uint32_t level );
     virtual bool IsOwner( string name );

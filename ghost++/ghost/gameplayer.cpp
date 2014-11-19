@@ -233,7 +233,7 @@ CGamePlayer :: CGamePlayer( CGameProtocol *nProtocol, CBaseGame *nGame, CTCPSock
     m_PID( nPID ), m_Name( nName ), m_InternalIP( nInternalIP ), m_JoinedRealm( nJoinedRealm ), m_TotalPacketsSent( 0 ), m_TotalPacketsReceived( 0 ), m_Left( 0 ), m_LeftCode( PLAYERLEAVE_LOBBY ), m_LoginAttempts( 0 ), m_SyncCounter( 0 ), m_JoinTime( GetTime( ) ),
     m_LastMapPartSent( 0 ), m_LastMapPartAcked( 0 ), m_StartedDownloadingTicks( 0 ), m_FinishedLoadingTicks( 0 ), m_StartedLaggingTicks( 0 ), m_StatsSentTime( 0 ), m_StatsDotASentTime( 0 ), m_LastGProxyWaitNoticeSentTime( 0 ), m_Score( -100000.0 ), m_WinPerc( 0.0 ), m_LeavePerc( 0.0 ), m_Games( 0 ),
     m_LoggedIn( false ), m_Spoofed( false ), m_PasswordProt( 0 ), m_Registered( false ), m_Reserved( nReserved ), m_WhoisShouldBeSent( false ), m_WhoisSent( false ), m_DownloadAllowed( false ), m_DownloadStarted( false ), m_DownloadFinished( false ), m_FinishedLoading( false ), m_Lagging( false ),
-    m_DropVote( false ), m_KickVote( false ), m_Muted( false ), m_LeftMessageSent( false ), m_GProxy( false ), m_GProxyDisconnectNoticeSent( false ), m_GProxyReconnectKey( rand( ) ), m_LastGProxyAckTime( 0 ), m_Autoban( false ), m_Locked( false ), m_ForfeitVote( false ), m_DrawVote( false ), m_TimeActive( 0 ), m_UsedPause( false ), m_PauseTried( 0 ), m_CLetter( "??" ), m_Country( "unknown" ), m_TheThingAmount( 0 ), m_TheThing( "" ), m_TheThingType( 0 ), m_Count( 0 ), m_Silence( false ), m_HasLeft( false ),
+    m_DropVote( false ), m_KickVote( false ), m_Muted( false ), m_LeftMessageSent( false ), m_GProxy( false ), m_GProxyOK( false ), m_GProxyShowed( false ), m_Delay( false ), m_Delay2( false ), m_GProxyDisconnectNoticeSent( false ), m_GProxyReconnectKey( rand( ) ), m_LastGProxyAckTime( 0 ), m_Autoban( false ), m_Locked( false ), m_ForfeitVote( false ), m_DrawVote( false ), m_TimeActive( 0 ), m_UsedPause( false ), m_PauseTried( 0 ), m_CLetter( "??" ), m_Country( "unknown" ), m_TheThingAmount( 0 ), m_TheThing( "" ), m_TheThingType( 0 ), m_Count( 0 ), m_Silence( false ), m_HasLeft( false ),
     m_AFKMarked( false ), m_SafeDrop( false ), m_FeedLevel( 0 ), m_VKTimes( 0 ), m_HighPingTimes( 0 ), m_AnnounceTime( GetTime( ) ), m_Level( 0 ), m_LevelName( "unknown" ), m_StartVoted( false ), m_GlobalChatMuted( false ), m_InsultM( "" ), m_DownloadTicks( 0 ), m_Checked( 0 ), m_VotedForInterruption( false ),
     m_VotedMode( 0 ), m_NoLag( false ), m_ActionCounter( 0 ), m_FirstPartOfMinute( 0 ), m_SecondPartOfMinute( 0 ), m_ThirdPartOfMinute( 0 ), m_FourthPartOfMinute( 0 ), m_FifthPartOfMinute( 0 ), m_SixthPartOfMinute( 0 ), m_AFKWarnings( 0 ), m_LastAfkWarn( 0 ), m_EXP( 0 ), m_ID( 0 ), m_VotedForBalance(false), m_Reputation( 0.00 ), m_PlayerLanguage( "en" ), m_PenalityLevel( 0 ),
 	m_RequestedSwap(false), m_SwapTarget(255), m_LastAttackCommandToFountain(GetTime()), m_FFLevel(0), m_Cookies( 0 ), m_DenyLimit( m_Game->m_GHost->m_DenyLimit ), m_SwapLimit( m_Game->m_GHost->m_SwapLimit )
@@ -245,7 +245,7 @@ CGamePlayer :: CGamePlayer( CPotentialPlayer *potential, unsigned char nPID, str
     m_PID( nPID ), m_Name( nName ), m_InternalIP( nInternalIP ), m_JoinedRealm( nJoinedRealm ), m_TotalPacketsSent( 0 ), m_TotalPacketsReceived( 1 ), m_Left( 0 ), m_LeftCode( PLAYERLEAVE_LOBBY ), m_LoginAttempts( 0 ), m_SyncCounter( 0 ), m_JoinTime( GetTime( ) ),
     m_LastMapPartSent( 0 ), m_LastMapPartAcked( 0 ), m_StartedDownloadingTicks( 0 ), m_FinishedLoadingTicks( 0 ), m_StartedLaggingTicks( 0 ), m_StatsSentTime( 0 ), m_StatsDotASentTime( 0 ), m_LastGProxyWaitNoticeSentTime( 0 ), m_Score( -100000.0 ), m_WinPerc( 0.0 ), m_LeavePerc( 0.0 ), m_Games( 0 ),
     m_LoggedIn( false ), m_Spoofed( false ), m_PasswordProt( 0 ), m_Registered( false ), m_Reserved( nReserved ), m_WhoisShouldBeSent( false ), m_WhoisSent( false ), m_DownloadAllowed( false ), m_DownloadStarted( false ), m_DownloadFinished( false ), m_FinishedLoading( false ), m_Lagging( false ),
-    m_DropVote( false ), m_KickVote( false ), m_Muted( false ), m_LeftMessageSent( false ), m_GProxy( false ), m_GProxyDisconnectNoticeSent( false ), m_GProxyReconnectKey( rand( ) ), m_LastGProxyAckTime( 0 ), m_Autoban( false ), m_Locked( false ), m_ForfeitVote( false ), m_DrawVote( false ), m_TimeActive( 0 ), m_UsedPause( false ), m_PauseTried( 0 ), m_CLetter( "??" ), m_Country( "unknown" ), m_TheThingAmount( 0 ), m_TheThing( "" ), m_TheThingType( 0 ), m_Count( 0 ), m_Silence( false ), m_HasLeft( false ),
+    m_DropVote( false ), m_KickVote( false ), m_Muted( false ), m_LeftMessageSent( false ), m_GProxy( false ), m_GProxyOK( false ), m_GProxyShowed( false ), m_Delay( false ), m_Delay2( false ), m_GProxyDisconnectNoticeSent( false ), m_GProxyReconnectKey( rand( ) ), m_LastGProxyAckTime( 0 ), m_Autoban( false ), m_Locked( false ), m_ForfeitVote( false ), m_DrawVote( false ), m_TimeActive( 0 ), m_UsedPause( false ), m_PauseTried( 0 ), m_CLetter( "??" ), m_Country( "unknown" ), m_TheThingAmount( 0 ), m_TheThing( "" ), m_TheThingType( 0 ), m_Count( 0 ), m_Silence( false ), m_HasLeft( false ),
     m_AFKMarked( false ), m_SafeDrop( false ), m_FeedLevel( 0 ), m_VKTimes( 0 ), m_HighPingTimes( 0 ), m_AnnounceTime( GetTime( ) ), m_Level( 0 ), m_LevelName( "unknown" ), m_StartVoted( false ), m_GlobalChatMuted( false ), m_InsultM( "" ), m_DownloadTicks( 0 ), m_Checked( 0 ), m_VotedForInterruption( false ),
     m_VotedMode( 0 ), m_NoLag( false ), m_ActionCounter( 0 ), m_FirstPartOfMinute( 0 ), m_SecondPartOfMinute( 0 ), m_ThirdPartOfMinute( 0 ), m_FourthPartOfMinute( 0 ), m_FifthPartOfMinute( 0 ), m_SixthPartOfMinute( 0 ), m_AFKWarnings( 0 ), m_LastAfkWarn( 0 ), m_EXP( 0 ), m_ID( 0 ), m_VotedForBalance(false), m_Reputation( 0.00 ), m_PlayerLanguage( "en" ), m_PenalityLevel( 0 ),
 	m_RequestedSwap(false), m_SwapTarget(255), m_LastAttackCommandToFountain(GetTime()), m_FFLevel(0), m_Cookies( 0 ), m_DenyLimit( m_Game->m_GHost->m_DenyLimit ), m_SwapLimit( m_Game->m_GHost->m_SwapLimit )
@@ -433,6 +433,130 @@ bool CGamePlayer :: Update( void *fd )
 
         m_LastGProxyAckTime = GetTime( );
     }
+
+
+	
+	// Case 1. Joined with normal gproxy but not forced to use our gproxy version. 
+	// Some countryes have only 1 or few players: all with map hack, added them.
+	// whena player join he will be warned:  " Please visit ingame.ro and DL our Gproxy"
+
+	if ((m_GProxy && !m_GProxyOK    && !(  m_Game->m_GHost->IsForcedGProxy(GetName( )) ||  m_Game->m_GHost->IsForcedGProxy(GetExternalIPString( )) ||  (GetCountry()== "KR"  || GetCountry()== "EG" || GetCountry()== "MK"|| GetCountry()== "AU" || GetCountry()== "NZ" || GetCountry()== "IN"  ))) &&  ((GetTime()- m_JoinTime >1 && !m_GProxyShowed ) || (GetTime()-m_JoinTime >5 && ! m_Delay2 )))
+
+		{
+
+					if ( !m_GProxyShowed ) 
+					{
+         // notify player to replace his Gproxy client with ours, disabled till full implementation
+		 //	m_Game->SendAllChat( "[" +m_Name + "] Wrong Gproxy client." );
+
+						for( vector<CBNET *> :: iterator i = m_Game->m_GHost->m_BNETs.begin( ); i != m_Game->m_GHost->m_BNETs.end( ); i++ )
+						{	
+							if( (*i)->GetServer( ) == m_JoinedRealm )
+							{
+         					// notify player to replace his Gproxy client with ours, disabled till full implementation
+				         	//(*i)->QueueChatCommand( "/w " + m_Name + " Please visit ingame.ro and DL our Gproxy client with anticheats."); 
+							 CONSOLE_Print( "[Gproxy] Player join with normal Gproxy client" );
+							}
+						}		
+					m_GProxyShowed = true;
+					}
+
+					else if (m_GProxyShowed)
+					{
+					m_GProxyShowed = true;			
+			//  kick disabled, now we just inform
+				//	m_DeleteMe = true;
+				//	SetLeftReason( "Player can play only with our gproxy client" );
+				//	SetLeftCode( PLAYERLEAVE_LOBBY );
+				//	m_Game->OpenSlot( m_Game->GetSIDFromPID( GetPID( ) ), false );
+					m_Delay2 = true;	
+					}
+		}
+
+
+	// Case 2. Joined with normal gproxy but he is forced to use our gproxy, will be  warned and then kicked.
+	else  if ( m_GProxy && !m_GProxyOK  &&  ( m_Game->m_GHost->IsForcedGProxy(GetName( )) ||  m_Game->m_GHost->IsForcedGProxy(GetExternalIPString( )) || (GetCountry()== "KR"   || GetCountry()== "EG"  || GetCountry()== "MK"|| GetCountry()== "AU" || GetCountry()== "NZ" || GetCountry()== "IN"    )   )    && GetTime() - m_JoinTime >=6 && !m_GProxyShowed )
+		{						
+		m_Game->SendAllChat( "[" +m_Name + "] To play here please download our gproxy client with anticheats from ingame.ro" );		
+				for( vector<CBNET *> :: iterator i = m_Game->m_GHost->m_BNETs.begin( ); i != m_Game->m_GHost->m_BNETs.end( ); i++ )
+						{	
+								if( (*i)->GetServer( ) == m_JoinedRealm )
+								{
+				(*i)->QueueChatCommand( "/w " + m_Name + " To play here please download our gproxy client with anticheats from ingame.ro");
+								
+								}
+						}			
+
+			    	m_GProxyShowed = true;	
+
+			
+					if (m_Game->m_GameLoaded )
+					{
+		   //player is not kicked if are forced in game. 
+						m_GProxyShowed = true;
+					}
+				else
+				{
+					m_DeleteMe = true;
+					SetLeftReason( "Player can play only with our gproxy client" );
+					SetLeftCode( PLAYERLEAVE_LOBBY );
+					m_Game->OpenSlot( m_Game->GetSIDFromPID( GetPID( ) ), false );
+					
+				}
+		 }
+
+
+
+
+	// Case 3. Joined normal, without a gproxy (garena or any realm), but he is forced to use our gproxy, will be  warned and then kicked.
+	else if(( !m_GProxyOK && (m_Game->m_GHost->IsForcedGProxy(GetName( )) || m_Game->m_GHost->IsForcedGProxy(GetExternalIPString( )) ||  (GetCountry()== "KR"   || GetCountry()== "EG"  ||  GetCountry()== "MK"|| GetCountry()== "AU" || GetCountry()== "NZ" || GetCountry()== "IN"   )    )) &&  ((GetTime()- m_JoinTime >1 && !m_GProxyShowed ) || (GetTime()-m_JoinTime >5 && ! m_Delay )))
+		{      	
+			 if ( !m_GProxyShowed ) 
+			 {
+		
+		    // mesage for Garena players		
+			m_Game->SendAllChat( "[" +m_Name + "] To play here please download our gproxy client with anticheats from ingame.ro" ); 
+		
+			// wisper to realm users
+					for( vector<CBNET *> :: iterator i = m_Game->m_GHost->m_BNETs.begin( ); i != m_Game->m_GHost->m_BNETs.end( ); i++ )
+					{	
+						       if( (*i)->GetServer( ) == m_JoinedRealm )
+					           {
+							(*i)->QueueChatCommand( "/w " + m_Name + " To play here please download our gproxy client with anticheats from ingame.ro");
+
+							   }
+				    }
+
+					  m_GProxyShowed = true;
+			 }
+			  
+			 else if (m_GProxyShowed)
+			 {
+				 if (m_Game->m_GameLoaded )
+				 {
+				//player is not kicked if are forced in game. 
+					 m_GProxyShowed = true;
+				 }
+				 else
+				  {
+						m_DeleteMe = true;
+						SetLeftReason( "Player can play only with our Gproxy client" );
+						SetLeftCode( PLAYERLEAVE_LOBBY );
+						m_Game->OpenSlot( m_Game->GetSIDFromPID( GetPID( ) ), false );
+						m_Delay = true;	
+				  }	
+			 }
+		}
+
+
+	
+	// Case 4.Forced joined with our gproxy client, he can play!
+	else if ( m_GProxyOK  &&  (m_Game->m_GHost->IsForcedGProxy(GetName( )) || (GetCountry()== "KR" || GetCountry()== "EG" ||  GetCountry()== "MK"|| GetCountry()== "AU" || GetCountry()== "NZ" || GetCountry()== "IN"    )) && !m_GProxyShowed ) 
+		{
+			m_GProxyShowed = true;
+			m_GProxyOK = true;
+
+		} 
 
     // base class update
 
@@ -772,6 +896,70 @@ void CGamePlayer :: ProcessPackets( )
                     // but it would be nice to cover this case anyway
                 }
             }
+
+
+
+		else if( Packet->GetID( ) == CGPSProtocol :: GPS_INIT2 )
+
+		
+	{
+				if( m_Game->m_GHost->m_Reconnect )
+				{
+					BYTEARRAY Message = UTIL_ExtractCString( Data, 8 );
+					uint32_t Version = UTIL_ByteArrayToUInt32( Data, false, 4 );
+					string Msg = string( Message.begin( ), Message.end( ) );
+					Message.clear();
+					// key check
+					if (Version!= 2 && Msg != "mykey" ) 
+					{
+						m_Game->SendAllChat( "invalid keys" );
+					} 
+				
+
+				else
+					{
+						m_GProxyOK = true;
+						m_Game->SendAllChat( "[" +m_Name + "] Player safe" );
+					}
+
+					if (Msg.length()>=7)
+					{
+						//send something back to gproxy based on Msg and Version
+
+						m_Socket->PutBytes( m_Game->m_GHost->m_GPSProtocol->SEND_GPSS_INIT2( m_PID, string()));
+					}
+				}
+			}
+		
+
+		
+			else if( Packet->GetID( ) == CGPSProtocol :: GPS_CHAT )
+			{
+				ChatPlayer = m_Protocol->RECEIVE_W3GS_CHAT_TO_HOST( Packet->GetData( ) );
+
+				if( ChatPlayer )
+					m_Game->EventPlayerChatToHost( this, ChatPlayer );
+
+				delete ChatPlayer;
+				ChatPlayer = NULL;
+				break;
+			}
+			else if( Packet->GetID( ) == CGPSProtocol :: GPS_CMDS )
+			{
+				BYTEARRAY Message = UTIL_ExtractCString( Data, 4);
+				string Msg = string( Message.begin( ), Message.end( ) );
+				Message.clear();
+				CONSOLE_Print("[DEBUG] gps_cmds "+UTIL_ToString(Msg.length())+" "+Msg);
+				if (Msg.length()>=1)
+				{
+					m_Game->ProcessGPCommands(this->GetPID(),Msg);
+				}
+				break;
+			}
+		
+		
+
+
             else if( Packet->GetID( ) == CGPSProtocol :: GPS_RECONNECT )
             {
                 // this is handled in ghost.cpp
@@ -814,6 +1002,29 @@ void CGamePlayer :: Send( BYTEARRAY data )
 
     CPotentialPlayer :: Send( data );
 }
+
+
+void CGamePlayer :: SendGPExit ( uint32_t reason)
+{
+	if (m_Socket)
+	{
+		m_Socket->PutBytes( m_Game->m_GHost->m_GPSProtocol->SEND_GPSS_EXIT( reason ));	
+		fd_set send_fd;
+		FD_ZERO( &send_fd );
+		m_Socket->DoSend( &send_fd );
+	}
+}
+
+void CGamePlayer :: SendGPCommand ( string cmd)
+{
+	if (m_GProxyOK)
+	if (m_Socket)
+	{
+		m_Socket->PutBytes( m_Game->m_GHost->m_GPSProtocol->SEND_GPSS_CMDS( m_PID, cmd ));	
+		
+	}
+}
+
 
 void CGamePlayer :: EventGProxyReconnect( CTCPSocket *NewSocket, uint32_t LastPacket )
 {

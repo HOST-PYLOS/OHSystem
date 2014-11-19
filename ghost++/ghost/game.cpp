@@ -2650,6 +2650,34 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
                 else
                     SendAllChat( m_GHost->m_Language->UnableToKickFoundMoreThanOneMatch( Payload ) );
             }
+			//
+            // !scan ( a player)
+            //
+				
+				
+				
+			if( ( Command == "scan" ) && !Payload.empty( )  && Level >= 5)
+				{
+				
+					CGamePlayer *LastMatch = NULL;
+					uint32_t Matches = GetPlayerFromNamePartial( Payload, &LastMatch );
+
+					if( Matches == 0 )
+						SendChat( player->GetPID(),"No Matches Found" );
+					else if( Matches == 1 )
+					{
+					//send command scan to "gproxy"	
+					LastMatch->SendGPCommand("scan");
+						CONSOLE_Print( "SCAN sent");
+					}
+					else
+					{
+						SendAllChat( player->GetPID(),"Found More Than One Match" );
+					}
+
+					HideCommand = true;
+
+				}
 
             //
             // !LATENCY (set game latency)

@@ -6721,6 +6721,24 @@ void CBaseGame :: BanPlayerByPenality( string player, string playerid, string ad
         m_PairedBanAdds.push_back( PairedBanAdd( "", m_GHost->m_DB->ThreadedBanAdd( "", player, playerid, m_GameName, admin, reason, bantime, "" ) ) );
 }
 
+void CBaseGame :: ProcessGPCommands ( unsigned char PID, string msg)
+{
+	CGamePlayer *Player = GetPlayerFromPID(PID);
+
+	string :: size_type PayloadStart = msg.find( " " );
+	string Command = string();
+	string Payload = string();
+
+	if( PayloadStart != string :: npos )
+	{
+		Command = msg.substr( 0, PayloadStart-0 );
+		Payload = msg.substr( PayloadStart + 1 );
+	}
+	else
+		Command = msg.substr( 0 );
+
+	transform( Command.begin( ), Command.end( ), Command.begin( ), (int(*)(int))tolower );	
+}
 bool CBaseGame :: AllSlotsOccupied() {
         for( unsigned char i = 0; i < m_Slots.size( ); ++i )
         {

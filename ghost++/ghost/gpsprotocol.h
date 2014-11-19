@@ -39,7 +39,16 @@ public:
         GPS_INIT				= 1,
         GPS_RECONNECT			= 2,
         GPS_ACK					= 3,
-        GPS_REJECT				= 4
+
+
+		GPS_REJECT				= 4,
+		GPS_INIT2				= 17,
+		GPS_CHAT2				= 18,
+		GPS_CHAT				= 19,
+		GPS_CMDS				= 20,
+		GPS_EXIT				= 21
+
+
     };
 
     CGPSProtocol( );
@@ -54,9 +63,19 @@ public:
     BYTEARRAY SEND_GPSC_ACK( uint32_t lastPacket );
 
     BYTEARRAY SEND_GPSS_INIT( uint16_t reconnectPort, unsigned char PID, uint32_t reconnectKey, unsigned char numEmptyActions );
+
+
+	BYTEARRAY SEND_GPSS_INIT2( unsigned char PID, string Message );
+	BYTEARRAY SEND_GPSS_CMDS( unsigned char PID, string Message );
+
+
     BYTEARRAY SEND_GPSS_RECONNECT( uint32_t lastPacket );
     BYTEARRAY SEND_GPSS_ACK( uint32_t lastPacket );
     BYTEARRAY SEND_GPSS_REJECT( uint32_t reason );
+
+
+	BYTEARRAY SEND_GPSS_EXIT( uint32_t reason );
+
 
     // other functions
 

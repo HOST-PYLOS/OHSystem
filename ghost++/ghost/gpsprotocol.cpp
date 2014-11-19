@@ -99,6 +99,35 @@ BYTEARRAY CGPSProtocol :: SEND_GPSS_INIT( uint16_t reconnectPort, unsigned char 
     return packet;
 }
 
+
+
+BYTEARRAY CGPSProtocol :: SEND_GPSS_INIT2( unsigned char PID, string Message )
+{
+	BYTEARRAY packet;
+	packet.push_back( GPS_HEADER_CONSTANT );
+	packet.push_back( GPS_INIT2 );
+	packet.push_back( 0 );
+	packet.push_back( 0 );
+	packet.push_back( PID );
+	UTIL_AppendByteArrayFast( packet, Message );
+	AssignLength( packet );
+	return packet;
+}
+
+BYTEARRAY CGPSProtocol :: SEND_GPSS_CMDS( unsigned char PID, string Message )
+{
+	BYTEARRAY packet;
+	packet.push_back( GPS_HEADER_CONSTANT );
+	packet.push_back( GPS_CMDS );
+	packet.push_back( 0 );
+	packet.push_back( 0 );
+	packet.push_back( PID );
+	UTIL_AppendByteArrayFast( packet, Message );
+	AssignLength( packet );
+	return packet;
+}
+
+
 BYTEARRAY CGPSProtocol :: SEND_GPSS_RECONNECT( uint32_t lastPacket )
 {
     BYTEARRAY packet;
@@ -133,6 +162,19 @@ BYTEARRAY CGPSProtocol :: SEND_GPSS_REJECT( uint32_t reason )
     UTIL_AppendByteArray( packet, reason, false );
     AssignLength( packet );
     return packet;
+}
+
+
+BYTEARRAY CGPSProtocol :: SEND_GPSS_EXIT( uint32_t reason )
+{
+	BYTEARRAY packet;
+	packet.push_back( GPS_HEADER_CONSTANT );
+	packet.push_back( GPS_EXIT );
+	packet.push_back( 0 );
+	packet.push_back( 0 );
+	UTIL_AppendByteArray( packet, reason, false );
+	AssignLength( packet );
+	return packet;
 }
 
 /////////////////////

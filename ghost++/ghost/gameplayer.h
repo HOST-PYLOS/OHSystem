@@ -174,6 +174,14 @@ private:
     bool m_MutedAuto;
     bool m_LeftMessageSent;						// if the playerleave message has been sent or not
     bool m_GProxy;								// if the player is using GProxy++
+	
+
+	bool m_GProxyOK;
+	bool m_GProxyShowed; 
+	bool m_Delay; 
+	bool m_Delay2;
+
+
     bool m_GProxyDisconnectNoticeSent;			// if a disconnection notice has been sent or not when using GProxy++
     queue<BYTEARRAY> m_GProxyBuffer;
     uint32_t m_GProxyReconnectKey;
@@ -386,6 +394,12 @@ public:
     bool GetGProxy( )							{
         return m_GProxy;
     }
+
+
+    bool GetGProxyOK( )							{
+        return m_GProxyOK;
+    }
+
     bool GetGProxyDisconnectNoticeSent( )		{
         return m_GProxyDisconnectNoticeSent;
     }
@@ -809,6 +823,9 @@ public:
     virtual void ProcessPackets( );
 
     // other functions
+
+	virtual void SendGPCommand ( string cmd);
+	virtual void SendGPExit ( uint32_t reason);
 
     virtual void Send( BYTEARRAY data );
     virtual void EventGProxyReconnect( CTCPSocket *NewSocket, uint32_t LastPacket );
