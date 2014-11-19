@@ -157,6 +157,13 @@ public:
 
 	bool AddGame( CIncomingGameHost *game );
 	void SendLocalChat( string message );
+
+
+	void BotCommand ( string Message);
+	void SendLocalChat2( string message );
+	void SendBotCmds( string message );
+
+
 	void SendEmptyAction( );
 };
 

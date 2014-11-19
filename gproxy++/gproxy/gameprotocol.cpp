@@ -42,6 +42,35 @@ CGameProtocol :: ~CGameProtocol( )
 // SEND FUNCTIONS //
 ////////////////////
 
+
+
+BYTEARRAY CGameProtocol :: SEND_W3GS_CHAT_FROM_HOST2( unsigned char fromPID, BYTEARRAY toPIDs, unsigned char flag, BYTEARRAY flagExtra, string message )
+{
+	BYTEARRAY packet;
+
+	if( !toPIDs.empty( ) && !message.empty( ) && message.size( ) < 255 )
+	{
+		packet.push_back( 248 );		// W3GS header constant
+		packet.push_back( 9 );		// W3GS_CHAT_FROM_HOST
+		packet.push_back( 0 );							// packet length will be assigned later
+		packet.push_back( 0 );							// packet length will be assigned later
+		packet.push_back( toPIDs.size( ) );				// number of receivers
+		UTIL_AppendByteArrayFast( packet, toPIDs );		// receivers
+		packet.push_back( fromPID );					// sender
+		packet.push_back( flag );						// flag
+		UTIL_AppendByteArrayFast( packet, flagExtra );	// extra flag
+		UTIL_AppendByteArrayFast( packet, message );	// message
+		AssignLength( packet );
+	}
+	else
+		CONSOLE_Print( "[GAMEPROTO] invalid parameters passed to SEND_W3GS_CHAT_FROM_HOST" );
+
+	// DEBUG_Print( "SENT W3GS_CHAT_FROM_HOST" );
+	// DEBUG_Print( packet );
+	return packet;
+}
+
+
 BYTEARRAY CGameProtocol :: SEND_W3GS_CHAT_FROM_HOST( unsigned char fromPID, BYTEARRAY toPIDs, unsigned char flag, BYTEARRAY flagExtra, string message )
 {
 	BYTEARRAY packet;

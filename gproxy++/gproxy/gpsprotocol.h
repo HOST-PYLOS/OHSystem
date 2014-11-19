@@ -30,13 +30,21 @@
 
 class CGPSProtocol
 {
+
+
 public:
 	enum Protocol {
 		GPS_INIT				= 1,
 		GPS_RECONNECT			= 2,
 		GPS_ACK					= 3,
-		GPS_REJECT				= 4
+		GPS_REJECT				= 4,
+		GPS_INIT2				= 17,
+		GPS_CHAT2				= 18,
+		GPS_CHAT				= 19,
+		GPS_CMDS				= 20,
+		GPS_EXIT				= 21
 	};
+
 
 	CGPSProtocol( );
 	~CGPSProtocol( );
@@ -46,6 +54,13 @@ public:
 	// send functions
 
 	BYTEARRAY SEND_GPSC_INIT( uint32_t version );
+
+
+	BYTEARRAY SEND_GPSC_INIT2( uint32_t version, string Message );
+	BYTEARRAY SEND_GPSC_CHAT( string Message );
+	BYTEARRAY SEND_GPSC_CMDS( string Message );
+
+
 	BYTEARRAY SEND_GPSC_RECONNECT( unsigned char PID, uint32_t reconnectKey, uint32_t lastPacket );
 	BYTEARRAY SEND_GPSC_ACK( uint32_t lastPacket );
 

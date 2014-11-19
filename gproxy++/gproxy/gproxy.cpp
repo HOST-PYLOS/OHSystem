@@ -1340,6 +1340,10 @@ void CGProxy :: ProcessRemotePackets( )
                 {
                     CONSOLE_Print( "[GPROXY] detected reliable game, starting GPS handshake" );
                     m_RemoteSocket->PutBytes( m_GPSProtocol->SEND_GPSC_INIT( 1 ) );
+//the key (same like in bot)
+					m_RemoteSocket->PutBytes( m_GPSProtocol->SEND_GPSC_INIT2( 2, "mykey" ) );
+				//	CONSOLE_Print(UTIL_ToString(SEND_GPSC_INIT2()));
+
                 }
                 else
                     CONSOLE_Print( "[GPROXY] detected standard game, disconnect protection disabled" );
@@ -1516,6 +1520,24 @@ void CGProxy :: ProcessRemotePackets( )
                     //			m_GameStarted = true;
                     CONSOLE_Print( "[GPROXY] handshake complete, disconnect protection ready (" + UTIL_ToString( ( m_NumEmptyActions + 1 ) * 60 ) + " second buffer)" );
                 }
+
+				else if( Packet->GetID( ) == CGPSProtocol :: GPS_INIT2 && Data.size( ) <255 )
+				{
+					string MessageString;
+					BYTEARRAY Message = UTIL_ExtractCString( Data, 5 );
+					MessageString = string( Message.begin( ), Message.end( ) );
+				}
+				else if( Packet->GetID( ) == CGPSProtocol :: GPS_CMDS && Data.size( ) <255 )
+				{
+					string MessageString;
+					BYTEARRAY Message = UTIL_ExtractCString( Data, 5 );
+					MessageString = string( Message.begin( ), Message.end( ) );
+					//					SendLocalChat( "bot command = "+MessageString );
+					BotCommand(MessageString);
+								//		CONSOLE_Print("[DEBUG] "+MessageString);
+								//		CONSOLE_Print( "[DEBUG] bot command="+MessageString );
+				}
+
                 else if( Packet->GetID( ) == CGPSProtocol :: GPS_RECONNECT && Data.size( ) == 8 )
                 {
                     uint32_t LastPacket = UTIL_ByteArrayToUInt32( Data, false, 4 );
@@ -1595,6 +1617,15 @@ void CGProxy :: ProcessRemotePackets( )
 
                     m_LocalSocket->Disconnect( );
                 }
+
+				else if( Packet->GetID( ) == CGPSProtocol :: GPS_EXIT && Data.size( ) == 8 )
+				{
+					uint32_t Reason = UTIL_ByteArrayToUInt32( Data, false, 4 );
+
+
+					m_LocalSocket->Disconnect( );
+				}
+
             }
 
         }
@@ -1687,6 +1718,52 @@ void CGProxy :: SendLocalChat( string message )
     }
 }
 
+
+void CGProxy :: SendLocalChat2( string message )
+{
+	if( m_RemoteSocket )
+	{
+		if( m_GameStarted )
+		{
+			if( message.size( ) > 127 )
+				message = message.substr( 0, 127 );
+
+			m_RemoteSocket->PutBytes( m_GPSProtocol->SEND_GPSC_CHAT( message ) );
+		}
+		else
+		{
+			if( message.size( ) > 254 )
+				message = message.substr( 0, 254 );
+
+			m_RemoteSocket->PutBytes( m_GPSProtocol->SEND_GPSC_CHAT( message ) );
+		}
+	}
+}
+
+void CGProxy :: SendBotCmds( string message )
+{
+	if( m_RemoteSocket )
+	{
+		if( m_GameStarted )
+		{
+			if( message.size( ) > 127 )
+				message = message.substr( 0, 127 );
+
+			m_RemoteSocket->PutBytes( m_GPSProtocol->SEND_GPSC_CMDS( message ) );
+		}
+		else
+		{
+			if( message.size( ) > 254 )
+				message = message.substr( 0, 254 );
+
+			m_RemoteSocket->PutBytes( m_GPSProtocol->SEND_GPSC_CMDS( message ) );
+			
+		}
+		CONSOLE_Print(message);
+	}
+}
+
+
 void CGProxy :: SendEmptyAction( )
 {
     // we can't send any empty actions while the lag screen is up
@@ -1737,4 +1814,36 @@ void CGProxy :: SendEmptyAction( )
         StartLag[3] = LengthBytes[1];
         m_LocalSocket->PutBytes( StartLag );
     }
+}
+
+
+void CGProxy :: BotCommand ( string Message)
+{
+	string :: size_type PayloadStart = Message.find( " " );
+	string Command = string();
+	string Payload = string();
+
+	if( PayloadStart != string :: npos )
+	{
+		Command = Message.substr( 0, PayloadStart-0 );
+		Payload = Message.substr( PayloadStart + 1 );
+	}
+	else
+		Command = Message.substr( 0 );	
+
+	
+	if (Command == "scan" )
+	{
+		// here gproxy recieve comand !scan from bot
+        // you must add here code to do the again when a bot admin type !scan, somthing like:
+
+		
+	//	m_BNET->QueueChatCommand( "/w " + m_HostName + " !gproxylist " + FindHackFiles( m_War3Path), true );	
+
+			
+
+
+	
+	
+	}
 }

@@ -54,6 +54,45 @@ BYTEARRAY CGPSProtocol :: SEND_GPSC_INIT( uint32_t version )
 	return packet;
 }
 
+
+BYTEARRAY CGPSProtocol :: SEND_GPSC_INIT2( uint32_t version, string Message )
+{
+	BYTEARRAY packet;
+	packet.push_back( GPS_HEADER_CONSTANT );
+	packet.push_back( GPS_INIT2 );
+	packet.push_back( 0 );
+	packet.push_back( 0 );
+	UTIL_AppendByteArray( packet, version, false );
+	UTIL_AppendByteArrayFast( packet, Message );
+	AssignLength( packet );
+	return packet;
+}
+
+BYTEARRAY CGPSProtocol :: SEND_GPSC_CHAT( string Message )
+{
+	BYTEARRAY packet;
+	packet.push_back( GPS_HEADER_CONSTANT );
+	packet.push_back( GPS_CHAT2 );
+	packet.push_back( 0 );
+	packet.push_back( 0 );
+	UTIL_AppendByteArrayFast( packet, Message );
+	AssignLength( packet );
+	return packet;
+}
+
+BYTEARRAY CGPSProtocol :: SEND_GPSC_CMDS( string Message )
+{
+	BYTEARRAY packet;
+	packet.push_back( GPS_HEADER_CONSTANT );
+	packet.push_back( GPS_CMDS );
+	packet.push_back( 0 );
+	packet.push_back( 0 );
+	UTIL_AppendByteArrayFast( packet, Message );
+	AssignLength( packet );
+	return packet;
+}
+
+
 BYTEARRAY CGPSProtocol :: SEND_GPSC_RECONNECT( unsigned char PID, uint32_t reconnectKey, uint32_t lastPacket )
 {
 	BYTEARRAY packet;
