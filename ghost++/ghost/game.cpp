@@ -3771,6 +3771,28 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 
         if( !m_GHost->m_CurrentGame->GetLocked( ) )
         {
+                        
+					
+					
+		
+	ReCalculateTeams();
+
+
+			if (m_GetMapNumTeams == 2 || m_Map->GetMapType().find("2teams") != string::npos) {
+				if (GetSlotsOccupiedT1() < 1 || GetSlotsOccupiedT2() < 1)
+				{			
+					SendAllChat("Both teams must have a player");
+							return false;
+				}
+				if (GetNumSlotsT1() == GetNumSlotsT2() && GetSlotsOccupiedT1() != GetSlotsOccupiedT2() && m_Map->GetMapType().find("noteam") == string::npos)
+        {
+					SendAllChat("Teams unbalanced!");
+							return false;
+				}
+			}
+			
+ 
+
             if(m_StartedVoteStartTime == 0) { //need >minplayers or admin to START a votestart
                 if (GetNumHumanPlayers() < m_GHost->m_VoteStartMinPlayers ) { //need at least eight players to votestart
                     SendChat( player, m_GHost->m_Language->UnableToVoteStartMissingPlayers( UTIL_ToString(m_GHost->m_VoteStartMinPlayers) ) );
@@ -3802,9 +3824,39 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             } else {
 //                                if( m_MatchMaking && m_AutoStartPlayers != 0 )
 //                                        BalanceSlots( );
+
+	
+							string StillDownloading;
+							for (vector<CGameSlot> ::iterator i = m_Slots.begin(); i != m_Slots.end(); i++)
+							{
+								if ((*i).GetSlotStatus() == SLOTSTATUS_OCCUPIED && (*i).GetComputer() == 0 && (*i).GetDownloadStatus() != 100)
+								{
+									CGamePlayer *Player = GetPlayerFromPID((*i).GetPID());
+									if (Player)
+									{
+										if (StillDownloading.empty())
+											StillDownloading = Player->GetName();
+										else
+											StillDownloading += ", " + Player->GetName();
+									}
+								}
+							}
+							if (!StillDownloading.empty())
+							//	SendAllChat(m_GHost->m_Language->PlayersStillDownloading(StillDownloading));
+							SendAllChat("Player still download");
+							if (StillDownloading.empty())
+
+							{
+							
+
                 SendAllChat(m_GHost->m_Language->SuccessfullyVoteStarted( ));
                 StartCountDown( true );
             }
+							else
+								return false;
+
+                }
+
         }
         else {
             SendChat( player, m_GHost->m_Language->UnableToVoteStartOwnerInGame( ) );

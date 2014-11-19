@@ -340,6 +340,21 @@ public:
 
     virtual void SetAnnounce( uint32_t interval, string message );
 
+
+
+	uint32_t m_Team1;							// Players in team 1
+	uint32_t m_Team2;							// Players in team 2
+	uint32_t m_Team3;							// Players in team 3
+	uint32_t m_Team4;							// Players in team 4
+	uint32_t m_TeamDiff;						// Difference between teams (in players number)
+	uint32_t m_GetMapNumTeams;
+	virtual void ReCalculateTeams();
+	virtual uint32_t GetNumSlotsT1();
+	virtual uint32_t GetNumSlotsT2();
+	virtual uint32_t GetSlotsOccupiedT1();
+	virtual uint32_t GetSlotsOccupiedT2();
+
+
     // processing functions
 
     virtual unsigned int SetFD( void *fd, void *send_fd, int *nfds );

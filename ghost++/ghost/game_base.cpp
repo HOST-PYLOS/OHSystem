@@ -364,6 +364,56 @@ uint32_t CBaseGame :: GetNumHumanPlayers( )
     return NumHumanPlayers;
 }
 
+uint32_t CBaseGame::GetNumSlotsT1()
+{
+	uint32_t NumSlotsT1 = 0;
+
+	for (vector<CGameSlot> ::iterator i = m_Slots.begin(); i != m_Slots.end(); i++)
+	{
+		if ((*i).GetSlotStatus() != SLOTSTATUS_CLOSED && (*i).GetComputer() == 0 && (*i).GetTeam() == 0)
+			NumSlotsT1++;
+	}
+
+	return NumSlotsT1;
+}
+uint32_t CBaseGame::GetNumSlotsT2()
+{
+	uint32_t NumSlotsT2 = 0;
+
+	for (vector<CGameSlot> ::iterator i = m_Slots.begin(); i != m_Slots.end(); i++)
+	{
+		if ((*i).GetSlotStatus() != SLOTSTATUS_CLOSED && (*i).GetComputer() == 0 && (*i).GetTeam() == 1)
+			NumSlotsT2++;
+	}
+
+	return NumSlotsT2;
+}
+uint32_t CBaseGame::GetSlotsOccupiedT1()
+{
+	uint32_t NumSlotsOccupiedT1 = 0;
+
+	for (vector<CGameSlot> ::iterator i = m_Slots.begin(); i != m_Slots.end(); i++)
+	{
+		if ((*i).GetSlotStatus() != SLOTSTATUS_OPEN && (*i).GetTeam() == 0)
+			NumSlotsOccupiedT1++;
+	}
+
+	return NumSlotsOccupiedT1;
+}
+uint32_t CBaseGame::GetSlotsOccupiedT2()
+{
+	uint32_t NumSlotsOccupiedT2 = 0;
+
+	for (vector<CGameSlot> ::iterator i = m_Slots.begin(); i != m_Slots.end(); i++)
+	{
+		if ((*i).GetSlotStatus() != SLOTSTATUS_OPEN && (*i).GetTeam() == 1)
+			NumSlotsOccupiedT2++;
+	}
+
+	return NumSlotsOccupiedT2;
+}
+
+
 string CBaseGame :: GetDescription( )
 {
     string Description = m_GameName + " : " + m_OwnerName + " : " + UTIL_ToString( GetNumHumanPlayers( ) ) + "/" + UTIL_ToString( m_GameLoading || m_GameLoaded ? m_StartPlayers : m_Slots.size( ) );
@@ -5709,6 +5759,59 @@ void CBaseGame :: AddToSpoofed( string server, string name, bool sendMessage )
     }
 }
 
+
+
+
+
+
+
+void CBaseGame::ReCalculateTeams()
+{
+	unsigned char sid;
+	unsigned char team;
+
+	m_Team1 = 0;
+	m_Team2 = 0;
+	m_Team3 = 0;
+	m_Team4 = 0;
+	m_TeamDiff = 0;
+
+	if (m_Players.empty())
+		return;
+
+	for (vector<CGamePlayer *> ::iterator i = m_Players.begin(); i != m_Players.end(); i++)
+	{
+		// ignore players who left and didn't get deleted yet.
+		if (*i)
+		if (!(*i)->GetLeftMessageSent())
+		{
+			sid = GetSIDFromPID((*i)->GetPID());
+			if (sid != 255)
+			{
+				team = m_Slots[sid].GetTeam();
+				if (team == 0)
+					m_Team1++;
+				if (team == 1)
+					m_Team2++;
+				if (team == 2)
+					m_Team3++;
+				if (team == 3)
+					m_Team4++;
+			}
+		}
+	}
+
+	if (m_GetMapNumTeams == 2)
+	{
+		if (m_Team1 > m_Team2)
+			m_TeamDiff = m_Team1 - m_Team2;
+		if (m_Team1 < m_Team2)
+			m_TeamDiff = m_Team2 - m_Team1;
+	}
+
+}
+
+
 void CBaseGame :: AddToReserved( string name, unsigned char SID, uint32_t level )
 {
     transform( name.begin( ), name.end( ), name.begin( ), ::tolower );
@@ -5972,6 +6075,9 @@ void CBaseGame :: StartCountDownAuto( bool requireSpoofChecks )
     if( !m_CountDownStarted )
     {
         // check if enough players are present
+
+	//	must test if work 
+		ReCalculateTeams(); 
 
         if( GetNumHumanPlayers( ) < m_AutoStartPlayers )
             return;
