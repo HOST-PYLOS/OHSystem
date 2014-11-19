@@ -76,6 +76,31 @@ CBNET :: CBNET( CGHost *nGHost, string nServer, string nServerAlias, string nBNL
         m_ServerAlias = "Asia";
     else if( LowerServer == "europe.battle.net" )
         m_ServerAlias = "Europe";
+	else if( LowerServer == "europe.warcraft3.eu" )
+		m_ServerAlias = "Balticum";
+	else if( LowerServer == "war3.alkar.net" )
+		m_ServerAlias = "Alkar";
+	else if( LowerServer == "190.100.223.232" )
+		m_ServerAlias = "Chile";
+	else if( LowerServer == "bnet.it-ground.net" )
+		m_ServerAlias = "IT-ground";
+	else if( LowerServer == "94.79.47.22" )
+		m_ServerAlias = "Telia";
+	else if( LowerServer == "83.69.139.148" )
+		m_ServerAlias = "Sarkor";
+	else if( LowerServer == "srv.war3games.com" )
+		m_ServerAlias = "Ombu";
+	else if( LowerServer == "serpi90.no-ip.info" )
+		m_ServerAlias = "Serpi";
+	else if( LowerServer == "196.38.180.96" )
+		m_ServerAlias = "Twilight.za";
+	else if( LowerServer == "battle.lp.ro" )
+		m_ServerAlias = "Battle.lp.ro";
+	else if( LowerServer == "rubattle.net" )
+		m_ServerAlias = "Rubattle";
+	else if( LowerServer == "175.103.60.12" )
+		m_ServerAlias = "Indonesia";
+
     else
         m_ServerAlias = m_Server;
 

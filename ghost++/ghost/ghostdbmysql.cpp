@@ -2852,7 +2852,7 @@ bool MySQLBotStatusCreate( void *conn, string *error, uint32_t botid, string use
 
 bool MySQLBotStatusUpdate( void *conn, string *error, uint32_t botid, string server, uint32_t status )
 {
-    if(server == "europe.battle.net" || server == "uswest.battle.net" || server == "useast.battle.net" ||server == "asia.battle.net" || server == "server.eurobattle.net") {
+    if(server == "europe.battle.net" || server == "uswest.battle.net" || server == "useast.battle.net" ||server == "asia.battle.net" || server == "server.eurobattle.net"|| server == "europe.warcraft3.eu"|| server == "war3.alkar.net"|| server == "190.100.223.232" ||  server == "bnet.it-ground.net"||  server == "94.79.47.22"||  server == "83.69.139.148"|| server == "srv.war3games.com"||  server == "serpi90.no-ip.info"||  server == "196.38.180.96"||  server == "battle.lp.ro"||  server == "175.103.60.12"|| server == "rubattle.net") {
         string Query = "UPDATE oh_bot_status SET "+server+" = '"+UTIL_ToString(status)+"', last_update=NOW() WHERE botid ="+UTIL_ToString(botid);
         if( mysql_real_query( (MYSQL *)conn, Query.c_str( ), Query.size( ) ) != 0 )
             *error = mysql_error( (MYSQL *)conn );
