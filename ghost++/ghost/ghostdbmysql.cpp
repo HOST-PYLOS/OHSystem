@@ -2325,6 +2325,7 @@ CDBStatsPlayerSummary *MySQLStatsPlayerSummaryCheck( void *conn, string *error, 
     bool hiddenacc = false;
     string country = "unknown";
     string countryCode = "??";
+	string city = "??";
     uint32_t exp = 0;
     uint32_t allcount = 0;
     uint32_t rankcount = 0;
@@ -2334,7 +2335,7 @@ CDBStatsPlayerSummary *MySQLStatsPlayerSummaryCheck( void *conn, string *error, 
     uint32_t leaver_level = 0;
     bool update_leaver_level = false;
 
-    string GlobalPlayerQuery = "SELECT id, realm, country, country_code, hide, exp, points, player_language, leaver_level, last_leaver_time<NOW() FROM oh_stats_players WHERE player_lower='"+EscLowerName+"'";
+    string GlobalPlayerQuery = "SELECT id, realm, country, country_code, city, hide, exp, points, player_language,leaver_level, last_leaver_time<NOW() FROM oh_stats_players WHERE player_lower='"+EscLowerName+"'";
     if( mysql_real_query( (MYSQL *)conn, GlobalPlayerQuery.c_str( ), GlobalPlayerQuery.size( ) ) != 0 )
         *error = mysql_error( (MYSQL *)conn );
     else
@@ -2345,18 +2346,19 @@ CDBStatsPlayerSummary *MySQLStatsPlayerSummaryCheck( void *conn, string *error, 
         {
             vector<string> Row = MySQLFetchRow( Result );
 
-            if( Row.size( ) == 10 )
+            if( Row.size( ) == 11 )
             {
                 id = UTIL_ToUInt32(Row[0]);
                 realm = Row[1];
                 country = Row[2];
                 countryCode = Row[3];
-                hiddenacc = UTIL_ToUInt32(Row[4]);
-                exp = UTIL_ToUInt32(Row[5]);
-                points = UTIL_ToUInt32(Row[6]);
-                languageSuffix = Row[7];
-                leaver_level = UTIL_ToUInt32(Row[8]);
-                update_leaver_level = UTIL_ToUInt32(Row[9]);
+				city = Row[4];
+                hiddenacc = UTIL_ToUInt32(Row[5]);
+                exp = UTIL_ToUInt32(Row[6]);
+                points = UTIL_ToUInt32(Row[7]);
+				languageSuffix = Row[8];
+leaver_level = UTIL_ToUInt32(Row[9]);
+                update_leaver_level = UTIL_ToUInt32(Row[10]);
                 if( update_leaver_level && leaver_level != 0 ) {
                     string UpdatePlayerQuery = "UPDATE oh_stats_players SET last_leaver_time = FROM_UNIXTIME( UNIX_TIMESTAMP( ) + 604800 ) , leaver_level=leaver_level-1 WHERE player_lower='"+EscLowerName+"'";
                     mysql_real_query( (MYSQL *)conn, UpdatePlayerQuery.c_str( ), UpdatePlayerQuery.size( ) );
@@ -2473,7 +2475,7 @@ CDBStatsPlayerSummary *MySQLStatsPlayerSummaryCheck( void *conn, string *error, 
         }
     }
 
-    StatsPlayerSummary = new CDBStatsPlayerSummary( id, EscName, EscLowerName, score, games, wins, losses, draw, kills, deaths, assists, creeps, denies, neutrals, towers, rax, streak, maxstreak, losingstreak, maxlosingstreak, zerodeaths, realm, leaves, allcount, rankcount, hiddenacc, country, countryCode, exp, reputation, languageSuffix, leaver_level );
+    StatsPlayerSummary = new CDBStatsPlayerSummary( id, EscName, EscLowerName, score, games, wins, losses, draw, kills, deaths, assists, creeps, denies, neutrals, towers, rax, streak, maxstreak, losingstreak, maxlosingstreak, zerodeaths, realm, leaves, allcount, rankcount, hiddenacc, country, countryCode, city, exp, reputation, languageSuffix, leaver_level );
 
     return StatsPlayerSummary;
 }

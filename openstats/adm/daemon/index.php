@@ -111,6 +111,8 @@ if ( file_exists("stop.tmp") ) unlink("stop.tmp");
     //FOR BAN IP update
 	 if ( file_exists("../../inc/geoip/geoip.inc") ) {
 	 include("../../inc/geoip/geoip.inc");
+	 include("../../inc/geoip/geoipcity.inc");
+	 $gi = geoip_open("../../inc/geoip/GeoLiteCity.dat",GEOIP_STANDARD);
 	 $GeoIPDatabase = geoip_open("../../inc/geoip/GeoIP.dat", GEOIP_STANDARD);
 	 $GeoIP = 1;
 	 }
@@ -218,17 +220,22 @@ if ($BanIPUpdate == 1) {
 	//   $Country = "United States";
 	//}
 	
+	$record = geoip_record_by_addr($gi,$ip);
+	  if (isset($record->city) )
+	  $city = mb_convert_encoding($record->city, "UTF-8"); 
+	  else $city="";
+	
 
 	if ( !empty($Country) ) {
 
-	$upd = $db->prepare("UPDATE ".OSDB_STATS." SET country='".convEnt2($Country)."', country_code = '".$Letter."' WHERE id = '".$row["id"]."' ");
+	$upd = $db->prepare("UPDATE ".OSDB_STATS." SET country='".convEnt2($Country)."', country_code = '".$Letter."', city='".$city."'  WHERE id = '".$row["id"]."' ");
 	$result = $upd->execute();
 	$count++;
 	if ($total>=1 AND empty($debug) AND $count>=1 )  $debug = " <b>Updating Countries (found: $total entries)</b>";
 	
-	if ( $CronReportDetails ==2 ) $debug.= "<div><b>$name</b>, $ip, $Letter, $Country</div>";
+	if ( $CronReportDetails ==2 ) $debug.= "<div><b>$name</b>, $ip, $Letter, $Country, $city</div>";
 	} else {
-	  if ( $CronReportDetails ==2 ) $debug.= "<div><span style=\"color:red\">FAILED: <b>$name</b>, IP: $ip, LETTER: $Letter, COUNTRY: $Country</span></div>";
+	  if ( $CronReportDetails ==2 ) $debug.= "<div><span style=\"color:red\">FAILED: <b>$name</b>, IP: $ip, LETTER: $Letter, COUNTRY: $Country, CITY: $city</span></div>";
 	  }
 	  
      	 

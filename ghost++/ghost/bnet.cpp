@@ -2078,7 +2078,9 @@ void CBNET :: BotCommand(string Message, string User, bool Whisper, bool ForceRo
 
                             Froms += (*i)->GetNameTerminated( );
                             Froms += ": (";
-                            Froms += (*i)->GetCLetter( );
+
+							Froms += (*i)->GetCountry() + "|" + (*i)->GetCity() + "|" + (*i)->GetJoinedRealm();
+
                             Froms += ")";
 
                             if( i != (*k)->m_Players.end( ) - 1 )

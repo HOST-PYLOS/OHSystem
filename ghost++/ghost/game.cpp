@@ -2510,11 +2510,14 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
 
                 for( vector<CGamePlayer *> :: iterator i = m_Players.begin( ); i != m_Players.end( ); ++i )
                 {
-		    if((*i)->GetCLetter( )!="" && (*i)->GetCountry( ) != "" ){
+		    if((*i)->GetCLetter( )!="" && (*i)->GetCountry( ) != ""  && (*i)->GetCity( ) != "") {
+
 	                // we reverse the byte order on the IP because it's stored in network byte order
         	        Froms += (*i)->GetNameTerminated( );
                 	Froms += ": (";
-                    	Froms += (*i)->GetCLetter( ) + "|" + (*i)->GetCountry( );
+
+										Froms += (*i)->GetCLetter( ) + "|" + (*i)->GetCountry( ) + "|" + (*i)->GetCity() + "|" + (*i)->GetJoinedRealm();
+                                    
                     	Froms += ")";
                     	if( i != m_Players.end( ) - 1 )
                        		Froms += ", ";

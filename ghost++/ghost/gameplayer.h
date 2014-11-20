@@ -191,6 +191,9 @@ private:
     uint32_t m_PauseTried;
     string m_CLetter;
     string m_Country;
+
+	string m_City;
+
     bool m_Silence;
     bool m_HasLeft;
     bool m_AFKMarked;
@@ -418,6 +421,13 @@ public:
     string GetCountry( )					{
         return m_Country;
     }
+
+
+	string GetCity( )					{
+		return m_City;
+	}
+
+
     bool GetSilence( )                                              {
         return m_Silence;
     }
@@ -675,6 +685,15 @@ public:
     void SetCountry( string nCountry )                                                      {
         m_Country = nCountry;
     }
+
+
+	void SetCity(string nCity)                                                               { 
+		m_City = nCity; 
+	}
+
+
+
+
     void SetSilence( bool nSilence )                                                                                {
         m_Silence = nSilence;
     }
