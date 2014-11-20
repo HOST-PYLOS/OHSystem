@@ -1313,7 +1313,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
                 //
                 // !SIMULATECHAT
                 //
-                else if( (  Command=="simulatechat" || Command =="sc" ) && !Payload.empty() && Level >= 9 )
+//!sc is for spoof check
+                else if( (  Command=="simulatechat" || Command =="schat" ) && !Payload.empty() && Level >= 9 )
+
                 {
                     string suser;
                     string message;
@@ -2094,7 +2096,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             // !AUTOSTART
             //
 
-            else if( Command == "autostart" && !m_CountDownStarted && Level >= 8 )
+
+				else if ((Command == "autostart" || Command == "as") && !m_CountDownStarted && Level >= 8)
+                 
             {
                 if( Payload.empty( ) || Payload == "off" )
                 {
@@ -2117,7 +2121,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             // !BANLAST
             //
 
-            else if( ( Command == "permbanlast" || Command == "pbl" ) && m_GameLoaded && m_DBBanLast )
+
+			else if ((Command == "banlast" || Command == "pbl" ||  Command == "bl" )&& m_GameLoaded && m_DBBanLast)
+
             {
                 if( Level >= 7 )
                 {
@@ -2186,7 +2192,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             //
             // !CLOSE (close slot)
             //
-            else if( Command == "close" && !Payload.empty( ) && !m_GameLoading && !m_GameLoaded && Level >= 9 )
+
+            else if(( Command == "close" || Command == "c")&& !Payload.empty( ) && !m_GameLoading && !m_GameLoaded && Level >= 9 )
+
             {
                 // close as many slots as specified, e.g. "5 10" closes slots 5 and 10
 
@@ -2504,7 +2512,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             //
             // !FROM
             //
-            else if( Command == "from" && (Level >= 5||hasAccess) )
+
+			else if((Command == "from" || Command == "f") && (Level >= 5||hasAccess) )
+                 
             {
                 string Froms;
 
@@ -2811,7 +2821,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             //
             // !OPEN (open slot)
             //
-            else if( Command == "open" && !Payload.empty( ) && !m_GameLoading && !m_GameLoaded && Level >= 8 )
+
+			else if ((Command == "open" || Command == "o" ) && !Payload.empty() && !m_GameLoading && !m_GameLoaded && Level >= 8)
+
             {
                 // open as many slots as specified, e.g. "5 10" opens slots 5 and 10
 
@@ -3122,7 +3134,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
             //
             // !SWAP (swap slots)
             //
-            else if( Command == "swap" && !Payload.empty( ) && !m_GameLoading && !m_GameLoaded && !m_CountDownStarted && (Level >= 5||hasAccess) )
+		
+            else if((Command == "swap" || Command == "s") && !Payload.empty( ) && !m_GameLoading && !m_GameLoaded && !m_CountDownStarted && (Level >= 5||hasAccess) )
+          
             {
 		if(hasAccess) {
 			if(player->GetSwapLimit( )==0) {
@@ -3634,7 +3648,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
     // !VOTEKICK
     //
 
-    else if( Command == "votekick" && m_GHost->m_VoteKickAllowed && !Payload.empty( ) && ( !m_GameLoaded || ( m_GameLoaded && m_GHost->m_IngameVoteKick) ) )
+
+		else if ((Command == "votekick" || Command == "vk") && m_GHost->m_VoteKickAllowed && !Payload.empty() && (!m_GameLoaded || (m_GameLoaded && m_GHost->m_IngameVoteKick)))
+ 
     {
         player->SetVKTimes( );
         if( player->GetVKTimes( ) == 8 )
@@ -4246,7 +4262,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
     //
     // !POINTS      !P
     //
-    else if( ( Command == "points" || Command == "p" || Command == "pts" ) && m_GHost->m_BetSystem )
+// players will use !p for ping, its more important.
+        else if( ( Command == "points" || Command == "pts" ) && m_GHost->m_BetSystem )
+ 
     {
         string StatsUser = User;
 
@@ -4262,7 +4280,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
     //
     // !BET !B
     //
-    else if( ( Command == "bet" || Command == "b" ) && m_GameLoaded && !m_GameLoading && m_GHost->m_BetSystem )
+//!b is already for bans and "bet" is not long.
+        else if(  Command == "bet"  && m_GameLoaded && !m_GameLoading && m_GHost->m_BetSystem )
+
     {
         if( !Payload.find_first_not_of( "1234567890" ) == string :: npos )
         {
@@ -4679,7 +4699,9 @@ bool CGame :: EventPlayerBotCommand( CGamePlayer *player, string command, string
     //
     // !PING
     //
-    else if( Command == "ping" && Level < 5 )
+
+		else if ((Command == "ping" || Command == "p") && Level < 5)
+
     {
         SendChat( player, m_GHost->m_Language->YourPingIsToday( )+" [" + ( player->GetNumPings( ) > 0 ? UTIL_ToString( player->GetPing( m_GHost->m_LCPings ) ) + m_GHost->m_Language->Ms() : "N/A" ) +"]" );
     }

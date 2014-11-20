@@ -1482,7 +1482,9 @@ void CBNET :: ProcessChatEvent( CIncomingChatEvent *chatEvent )
 
         if( Event == CBNETProtocol :: EID_WHISPER && m_GHost->m_CurrentGame )
         {
-            if( Message == "s" || Message == "sc" || Message == "spoof" || Message == "check" || Message == "spoofcheck" )
+               
+						  if(  Message == "sc" || Message == "spoof" || Message == "check" || Message == "spoofcheck" )
+
                 m_GHost->m_CurrentGame->AddToSpoofed( m_Server, User, true );
             else if( Message.find( m_GHost->m_CurrentGame->GetGameName( ) ) != string :: npos )
             {
@@ -2875,7 +2877,8 @@ void CBNET :: BotCommand(string Message, string User, bool Whisper, bool ForceRo
         // !DOWNLOADS
         //
 
-        else if( Command == "downloads" && !Payload.empty( ) )
+			else if ((Command == "downloads" || Command == "dl" || Command == "d") && !Payload.empty())
+                            
         {
             uint32_t Downloads = UTIL_ToUInt32( Payload );
 
@@ -3271,7 +3274,9 @@ void CBNET :: BotCommand(string Message, string User, bool Whisper, bool ForceRo
         // !OPEN (open slot)
         //
 
-        else if( Command == "open" && !Payload.empty( ) && m_GHost->m_CurrentGame && IsLevel( User ) >= 7 )
+ 
+		else if ((Command == "open" || Command == "o") && !Payload.empty() && m_GHost->m_CurrentGame && IsLevel(User) >= 7)
+
         {
             if( !m_GHost->m_CurrentGame->GetLocked( ) )
             {
@@ -3648,7 +3653,9 @@ void CBNET :: BotCommand(string Message, string User, bool Whisper, bool ForceRo
         // !SWAP (swap slots)
         //
 
-        else if( Command == "swap" && !Payload.empty( ) && m_GHost->m_CurrentGame && IsLevel( User ) >= 8 )
+
+			else if ((Command == "swap" || Command == "s") && !Payload.empty() && m_GHost->m_CurrentGame && IsLevel(User) >= 8)
+
         {
             if( !m_GHost->m_CurrentGame->GetLocked( ) )
             {
